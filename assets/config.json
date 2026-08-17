@@ -1,5 +1,5 @@
 {
-  "title": "Arithmetic Pupil’s Book Standard One",
+  "title": "Arithmetic Pupil\u2019s Book Standard One",
   "bundleVersion": "1",
   "languages": {
     "available": [
@@ -13,7 +13,7 @@
     "glossary": true,
     "eli5": false,
     "readAloud": true,
-    "autoplay": true,
+    "autoplay": false,
     "showTutorial": true,
     "showNavigationControls": true,
     "describeImages": true,

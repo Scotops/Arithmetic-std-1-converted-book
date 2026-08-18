@@ -6,7 +6,15 @@
 
   function hideUnneededInputs() {
     if (!section.dataset.matrixNoInput) return;
-    section.querySelectorAll('input, textarea, select, button, .adt-activity-actions, .adt-match-panel').forEach(el => el.remove());
+    const pageContent = document.querySelector('#content') || section;
+    const removeGeneratedControls = () => {
+      pageContent.querySelectorAll('.adt-open-response').forEach(el => (el.closest('label') || el).remove());
+      pageContent.querySelectorAll('input, textarea, select, button, .adt-activity-actions, .adt-match-panel').forEach(el => el.remove());
+    };
+    removeGeneratedControls();
+    // The reader can append answer controls after this file has loaded. Keep
+    // reading-only pages free of those controls even after late initialization.
+    new MutationObserver(removeGeneratedControls).observe(pageContent, { childList: true, subtree: true });
   }
 
   function tracingTool() {

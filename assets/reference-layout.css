@@ -1,0 +1,23 @@
+/* Print-page frame matching the supplied ADT layout reference. */
+html { background: #e4eaf1; }
+body { min-height: 100vh; background: #e4eaf1 !important; }
+body > main { width: 100%; }
+#content {
+  box-sizing: border-box;
+  width: min(1090px, calc(100% - 3rem)) !important;
+  max-width: 1090px !important;
+  min-height: calc(100vh - 9rem);
+  margin: 1.25rem auto 6.5rem !important;
+  padding: clamp(1.5rem, 3.2vw, 4rem) !important;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, .14);
+}
+@media (max-width: 640px) {
+  #content {
+    width: 100% !important;
+    min-height: calc(100vh - 5.5rem);
+    margin: 0 0 5.5rem !important;
+    padding: 1rem !important;
+    box-shadow: none;
+  }
+}

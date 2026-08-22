@@ -36,7 +36,10 @@
   function blankFor(control) {
     const blank = document.createElement('span');
     blank.className = `${control.className || ''} adt-static-answer-space`.trim();
-    blank.setAttribute('aria-hidden', 'true');
+    // The printed line/box is not interactive, but it must still be
+    // announced to a child using read-aloud or a screen reader.
+    blank.setAttribute('role', 'img');
+    blank.setAttribute('aria-label', 'dash');
     // Answer values belong to an interactive exercise, not to the printed page.
     blank.removeAttribute('tabindex');
     return blank;

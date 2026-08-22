@@ -16,7 +16,7 @@
     "autoplay": false,
     "showTutorial": true,
     "showNavigationControls": true,
-    "describeImages": false,
+    "describeImages": true,
     "notepad": false,
     "state": true,
     "characterDisplay": false,

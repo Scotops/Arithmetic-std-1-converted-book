@@ -2,6 +2,94 @@
 html { background: #e4eaf1; }
 body { min-height: 100vh; background: #e4eaf1 !important; }
 body > main { width: 100%; }
+/* Source-book palette and type treatments shared by the printed pages. */
+:root {
+  --book-turquoise: #00a9b7;
+  --book-turquoise-dark: #0099a8;
+  --book-pale-turquoise: #e9fbfc;
+  --book-ink: #202020;
+}
+#content, #content * { font-family: "Comic Sans MS", "Comic Sans", cursive; }
+#content [class~="bg-cyan-500"], #content [class*="bg-cyan-500"],
+#content [class~="bg-teal-500"], #content [class*="bg-teal-500"] {
+  background-color: var(--book-turquoise) !important;
+}
+#content [class*="text-cyan-"], #content [class*="text-teal-"] {
+  color: var(--book-turquoise-dark) !important;
+}
+#content [class*="border-cyan-"], #content [class*="border-teal-"] {
+  border-color: #22cddd !important;
+}
+#content [class*="bg-cyan-50"], #content [class*="bg-sky-50"],
+#content [class*="bg-teal-50"] {
+  background-color: var(--book-pale-turquoise) !important;
+}
+/* The source book has a narrow turquoise patterned rule at each outer edge
+   on its front matter, rather than a separate ADT panel. */
+[data-section-type="table_of_contents"], [data-section-type="credits"] {
+  border-inline: 12px solid rgba(0, 169, 183, .23);
+  background-image:
+    linear-gradient(90deg, rgba(0,169,183,.06), transparent 3.5rem, transparent calc(100% - 3.5rem), rgba(0,169,183,.06));
+}
+[data-section-type="table_of_contents"] h1,
+[data-section-type="credits"] h1 {
+  color: var(--book-turquoise-dark) !important;
+  font-weight: 700;
+}
+/* Table of contents: title, leaders, and page numerals follow the source. */
+[data-section-type="table_of_contents"] .border-dotted {
+  border-bottom-width: 2px !important;
+  border-color: #202020 !important;
+}
+[data-section-type="table_of_contents"] [data-id$="n0006"],
+[data-section-type="table_of_contents"] [data-id$="n0009"],
+[data-section-type="table_of_contents"] [data-id$="n0013"],
+[data-section-type="table_of_contents"] [data-id$="n0017"],
+[data-section-type="table_of_contents"] [data-id$="n0021"],
+[data-section-type="table_of_contents"] [data-id$="n0025"],
+[data-section-type="table_of_contents"] [data-id$="n0029"],
+[data-section-type="table_of_contents"] [data-id$="n0034"],
+[data-section-type="table_of_contents"] [data-id$="n0036"],
+[data-section-type="table_of_contents"] [data-id$="n0038"],
+.toc-page-number {
+  color: var(--book-turquoise-dark) !important;
+  font-weight: 700;
+  min-width: 3.25rem;
+  text-align: right;
+  white-space: nowrap;
+}
+[data-section-type="table_of_contents"] [data-toc-entry] {
+  display: grid;
+  grid-template-columns: max-content minmax(4rem, 1fr) max-content;
+  align-items: end;
+  gap: .75rem;
+}
+[data-section-type="table_of_contents"] [data-toc-entry]::after {
+  content: "";
+  order: 1;
+  border-bottom: 2px dotted #202020;
+  margin-bottom: .42em;
+}
+[data-section-type="table_of_contents"] [data-toc-entry] > p { order: 0; }
+[data-section-type="table_of_contents"] [data-toc-entry] > .border-dotted { display: none; }
+[data-section-type="table_of_contents"] [data-toc-entry] > .toc-page-number { order: 2; }
+[data-section-id="pg003_sec001"] .w-12 { color: var(--book-turquoise-dark) !important; font-weight: 700; }
+/* The signature on the second acknowledgements page begins at the same left
+   text margin as the Director General's name in the source. */
+[data-section-id="pg005_sec001"] .signature-block { margin-left: 0; }
+[data-section-id="pg005_sec001"] .signature-block img {
+  display: block;
+  width: 142px !important;
+  max-width: 142px !important;
+  margin-left: 0 !important;
+}
+@media (max-width: 640px) {
+  [data-section-type="table_of_contents"] [data-toc-entry] {
+    grid-template-columns: minmax(0, 1fr) max-content;
+    gap: .4rem;
+  }
+  [data-section-type="table_of_contents"] [data-toc-entry]::after { display: none; }
+}
 .adt-blank-line {
   display: inline-block;
   width: 4.25rem;

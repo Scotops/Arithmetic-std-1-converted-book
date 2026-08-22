@@ -47,9 +47,14 @@
   font-display: swap;
 }
 
-/* Apply the font globally */
+/*
+ * The printed pupil's book uses a rounded, handwritten school-book face.
+ * Comic Sans MS is installed with Windows and is the closest available match
+ * to the source PDF.  Keep the reader chrome in Atkinson below: it is an
+ * interface control rather than part of the printed page.
+ */
 body, p, h1, h2, h3, h4, h5, h6, span, div, button, input, textarea, select {
-  font-family: "Merriweather", serif;
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
 }
 
 #nav-container, #nav-container *,

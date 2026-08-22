@@ -10,6 +10,23 @@ body > main { width: 100%; }
   --book-ink: #202020;
 }
 #content, #content * { font-family: "Comic Sans MS", "Comic Sans", cursive; }
+/* Read-aloud remains available, but its transient visual word overlay is not
+   part of the printed book and must not cover page text. */
+#content mark,
+#content [class*="highlight"],
+#content [class*="Highlight"],
+#content [data-highlight],
+#content [data-word-highlight] {
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+#content [class*="highlight-overlay"],
+#content [class*="HighlightOverlay"],
+#content [class*="word-highlight"],
+#content [class*="WordHighlight"] {
+  display: none !important;
+}
 #content [class~="bg-cyan-500"], #content [class*="bg-cyan-500"],
 #content [class~="bg-teal-500"], #content [class*="bg-teal-500"] {
   background-color: var(--book-turquoise) !important;

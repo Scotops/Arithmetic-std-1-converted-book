@@ -43,7 +43,7 @@
     ],
     17: {
       text: 'By using accessible tools, draw lines to match each word with its number.',
-      top: '12.5%', left: '5%', width: '92%', minHeight: '5.2%', fontSize: '1.1vw', nowrap: true
+      top: '13.3%', left: '10.8%', width: '88%', minHeight: '4.3%', fontSize: '1.25vw', nowrap: true
     },
     18: {
       text: 'Read aloud / sign the following numbers.',

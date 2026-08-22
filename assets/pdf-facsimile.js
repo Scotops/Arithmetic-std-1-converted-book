@@ -59,7 +59,7 @@
     },
     40: {
       text: 'Read / identify the question that appears on the screen clearly.',
-      top: '20.5%', left: '17%', width: '70%', minHeight: '7.2%', fontSize: '2.25vw'
+      top: '20.5%', left: '17%', width: '70%', minHeight: '7.2%', fontSize: '2.25vw', background: '#e5f3f4'
     },
     41: {
       text: 'By using accessible tools, draw the remaining objects after taking away.',
@@ -67,7 +67,7 @@
     },
     51: {
       text: 'Read / identify the question that appears on the screen clearly.',
-      top: '71.8%', left: '17%', width: '76%', minHeight: '7.6%', fontSize: '2.05vw'
+      top: '71.8%', left: '17%', width: '76%', minHeight: '7.6%', fontSize: '2.05vw', background: '#e5f3f4'
     },
     52: {
       text: 'Read aloud / sign the following numbers.',
@@ -87,9 +87,10 @@
     correction.style.cssText = [
       'position:absolute', 'z-index:1', `top:${instruction.top}`, `left:${instruction.left}`,
       `width:${instruction.width}`, `min-height:${instruction.minHeight}`,
-      'margin:0', 'padding:0.5% 1.5%', 'box-sizing:border-box',
-      'background:#fff', 'color:#222', "font-family:'Comic Sans MS','Comic Sans',cursive",
-      `font-size:${instruction.fontSize}`, 'font-style:italic', 'font-weight:400', 'line-height:1.3'
+      'margin:0', 'padding:0.35% 1.15%', 'box-sizing:border-box',
+      `background:${instruction.background || '#fff'}`, 'color:#222', "font-family:'Comic Sans MS','Comic Sans',cursive",
+      `font-size:${instruction.fontSize}`, 'font-style:italic', 'font-weight:400', 'font-stretch:normal',
+      'letter-spacing:normal', 'line-height:1.3'
     ].join(';');
     content.append(correction);
   });

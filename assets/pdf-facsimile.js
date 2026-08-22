@@ -20,17 +20,29 @@
   sections.forEach((section) => section.classList.add('pdf-facsimile-accessible-source'));
   content.prepend(image);
 
-  // Page 12 has a corrected exercise instruction. Keep the printed-page view
-  // and its readable source text aligned without altering the artwork.
-  if (page === 12) {
+  // Corrected exercise instructions. Keep the printed-page view and its
+  // readable source text aligned without altering the book artwork.
+  const correctedInstructions = {
+    12: {
+      text: 'Count and say / identify the number of objects in each group.',
+      top: '13.3%', left: '11%', width: '78%', minHeight: '6.8%', fontSize: '2.8vw'
+    },
+    14: {
+      text: 'By using accessible tools, draw a line to match the objects and their number.',
+      top: '12.1%', left: '9.5%', width: '79%', minHeight: '5.2%', fontSize: '2.35vw'
+    }
+  };
+  const instruction = correctedInstructions[page];
+  if (instruction) {
     const correction = document.createElement('p');
     correction.className = 'pdf-page-text-correction';
-    correction.textContent = 'Count and say / identify the number of objects in each group.';
+    correction.textContent = instruction.text;
     correction.style.cssText = [
-      'position:absolute', 'z-index:1', 'top:13.3%', 'left:11%', 'width:78%',
-      'min-height:6.8%', 'margin:0', 'padding:0.5% 1.5%', 'box-sizing:border-box',
+      'position:absolute', 'z-index:1', `top:${instruction.top}`, `left:${instruction.left}`,
+      `width:${instruction.width}`, `min-height:${instruction.minHeight}`,
+      'margin:0', 'padding:0.5% 1.5%', 'box-sizing:border-box',
       'background:#fff', 'color:#222', "font-family:'Comic Sans MS','Comic Sans',cursive",
-      'font-size:2.8vw', 'font-style:italic', 'font-weight:400', 'line-height:1.45'
+      `font-size:${instruction.fontSize}`, 'font-style:italic', 'font-weight:400', 'line-height:1.3'
     ].join(';');
     content.style.position = 'relative';
     content.append(correction);

@@ -43,7 +43,7 @@
     ],
     17: {
       text: 'By using accessible tools, draw lines to match each word with its number.',
-      top: '12.8%', left: '10%', width: '84%', minHeight: '6%', fontSize: '1.45vw', nowrap: true
+      top: '12.5%', left: '5%', width: '92%', minHeight: '5.2%', fontSize: '1.1vw', nowrap: true
     },
     18: {
       text: 'Read aloud / sign the following numbers.',
@@ -51,7 +51,7 @@
     },
     25: {
       text: 'Read aloud / sign the following numbers.',
-      top: '52.8%', left: '11%', width: '82%', minHeight: '4.2%', fontSize: '1.85vw', nowrap: true
+      top: '52.3%', left: '8%', width: '85%', minHeight: '2.9%', fontSize: '1.85vw', nowrap: true
     },
     28: {
       text: 'By using accessible tools / draw pictures to represent the sum of each of the following objects.',

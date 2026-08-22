@@ -30,10 +30,25 @@
     14: {
       text: 'By using accessible tools, draw a line to match the objects and their number.',
       top: '12.1%', left: '9.5%', width: '79%', minHeight: '5.2%', fontSize: '2.35vw'
-    }
+    },
+    16: [
+      {
+        text: 'Read aloud / sign the following numbers.',
+        top: '38.5%', left: '10%', width: '77%', minHeight: '4.2%', fontSize: '2.55vw'
+      },
+      {
+        text: 'Read aloud / sign the following numbers.',
+        top: '76.8%', left: '10%', width: '77%', minHeight: '4.2%', fontSize: '2.55vw'
+      }
+    ]
   };
-  const instruction = correctedInstructions[page];
-  if (instruction) {
+  const instructions = correctedInstructions[page]
+    ? (Array.isArray(correctedInstructions[page]) ? correctedInstructions[page] : [correctedInstructions[page]])
+    : [];
+  if (instructions.length) {
+    content.style.position = 'relative';
+  }
+  instructions.forEach((instruction) => {
     const correction = document.createElement('p');
     correction.className = 'pdf-page-text-correction';
     correction.textContent = instruction.text;
@@ -44,7 +59,6 @@
       'background:#fff', 'color:#222', "font-family:'Comic Sans MS','Comic Sans',cursive",
       `font-size:${instruction.fontSize}`, 'font-style:italic', 'font-weight:400', 'line-height:1.3'
     ].join(';');
-    content.style.position = 'relative';
     content.append(correction);
-  }
+  });
 })();

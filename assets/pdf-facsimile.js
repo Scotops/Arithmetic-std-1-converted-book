@@ -72,6 +72,34 @@
     52: {
       text: 'Read aloud / sign the following numbers.',
       top: '70.8%', left: '10%', width: '82%', minHeight: '4.4%', fontSize: '1.85vw', nowrap: true
+    },
+    64: [
+      {
+        text: 'Read / identify the following numbers.',
+        top: '12.7%', left: '8%', width: '85%', minHeight: '2.9%', fontSize: '1.85vw', nowrap: true
+      },
+      {
+        text: 'Read / identify the following numbers.',
+        top: '63.4%', left: '8%', width: '85%', minHeight: '2.9%', fontSize: '1.85vw', nowrap: true
+      }
+    ],
+    65: [
+      {
+        text: 'Read / identify the following numbers.',
+        top: '12.7%', left: '8%', width: '85%', minHeight: '2.9%', fontSize: '1.85vw', nowrap: true
+      },
+      {
+        text: 'Read / identify the following numbers.',
+        top: '45.6%', left: '8%', width: '85%', minHeight: '2.9%', fontSize: '1.85vw', nowrap: true
+      }
+    ],
+    66: {
+      text: 'Read / identify the following numbers.',
+      top: '12.7%', left: '8%', width: '85%', minHeight: '2.9%', fontSize: '1.85vw', nowrap: true
+    },
+    78: {
+      text: 'Count and read / identify the following numbers in ones and tens.',
+      top: '47.5%', left: '8%', width: '84%', minHeight: '6.3%', fontSize: '1.5vw'
     }
   };
   const instructions = correctedInstructions[page]

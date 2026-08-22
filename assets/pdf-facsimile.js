@@ -68,6 +68,10 @@
     51: {
       text: 'Read / identify the question that appears on the screen clearly.',
       top: '71.8%', left: '17%', width: '76%', minHeight: '7.6%', fontSize: '2.05vw'
+    },
+    52: {
+      text: 'Read aloud / sign the following numbers.',
+      top: '70.8%', left: '10%', width: '78%', minHeight: '4.4%', fontSize: '2.4vw'
     }
   };
   const instructions = correctedInstructions[page]

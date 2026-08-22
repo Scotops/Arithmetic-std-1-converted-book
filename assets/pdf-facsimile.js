@@ -29,7 +29,7 @@
     },
     14: {
       text: 'By using accessible tools, draw a line to match the objects and their number.',
-      top: '12.1%', left: '9.5%', width: '84%', minHeight: '5.2%', fontSize: '1.45vw', nowrap: true
+      top: '12.1%', left: '7%', width: '88%', minHeight: '5.2%', fontSize: '1.1vw', nowrap: true
     },
     16: [
       {

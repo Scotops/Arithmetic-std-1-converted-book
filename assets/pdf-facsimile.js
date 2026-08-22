@@ -52,6 +52,10 @@
     25: {
       text: 'Read aloud / sign the following numbers.',
       top: '52.8%', left: '11%', width: '76%', minHeight: '4.2%', fontSize: '2.55vw'
+    },
+    28: {
+      text: 'By using accessible tools / draw pictures to represent the sum of each of the following objects.',
+      top: '72.4%', left: '10%', width: '78%', minHeight: '6.2%', fontSize: '1.85vw'
     }
   };
   const instructions = correctedInstructions[page]

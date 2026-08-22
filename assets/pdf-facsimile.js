@@ -56,6 +56,10 @@
     28: {
       text: 'By using accessible tools / draw pictures to represent the sum of each of the following objects.',
       top: '72.4%', left: '10%', width: '78%', minHeight: '6.2%', fontSize: '1.85vw'
+    },
+    40: {
+      text: 'Read / identify the question that appears on the screen clearly.',
+      top: '20.5%', left: '17%', width: '70%', minHeight: '7.2%', fontSize: '2.25vw'
     }
   };
   const instructions = correctedInstructions[page]

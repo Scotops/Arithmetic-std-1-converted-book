@@ -2,6 +2,14 @@
 html { background: #e4eaf1; }
 body { min-height: 100vh; background: #e4eaf1 !important; }
 body > main { width: 100%; }
+.adt-blank-line {
+  display: inline-block;
+  width: 4.25rem;
+  height: .95em;
+  margin: 0 .3rem;
+  vertical-align: -.08em;
+  border-bottom: 2px solid currentColor;
+}
 .page44-printed-equation {
   display: inline-flex;
   align-items: center;

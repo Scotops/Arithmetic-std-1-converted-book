@@ -51,7 +51,7 @@
     },
     25: {
       text: 'Read aloud / sign the following numbers.',
-      top: '52.3%', left: '8%', width: '85%', minHeight: '2.9%', fontSize: '1.85vw', nowrap: true
+      top: '52.3%', left: '14%', width: '79%', minHeight: '2.9%', fontSize: '1.85vw', nowrap: true
     },
     28: {
       text: 'By using accessible tools / draw pictures to represent the sum of each of the following objects.',

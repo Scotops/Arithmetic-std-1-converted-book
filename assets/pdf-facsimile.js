@@ -60,6 +60,10 @@
     40: {
       text: 'Read / identify the question that appears on the screen clearly.',
       top: '20.5%', left: '17%', width: '70%', minHeight: '7.2%', fontSize: '2.25vw'
+    },
+    41: {
+      text: 'By using accessible tools, draw the remaining objects after taking away.',
+      top: '68.4%', left: '12%', width: '78%', minHeight: '5.5%', fontSize: '1.9vw'
     }
   };
   const instructions = correctedInstructions[page]

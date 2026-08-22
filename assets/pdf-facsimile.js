@@ -48,6 +48,10 @@
     18: {
       text: 'Read aloud / sign the following numbers.',
       top: '13.2%', left: '10%', width: '77%', minHeight: '4.2%', fontSize: '2.55vw'
+    },
+    25: {
+      text: 'Read aloud / sign the following numbers.',
+      top: '52.8%', left: '11%', width: '76%', minHeight: '4.2%', fontSize: '2.55vw'
     }
   };
   const instructions = correctedInstructions[page]

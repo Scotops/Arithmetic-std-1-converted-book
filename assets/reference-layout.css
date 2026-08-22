@@ -79,14 +79,3 @@ body > main { width: 100%; }
   border: 1px solid #555;
   background: #fff;
 }
-
-[data-section-id="pg036_sec001"] [data-id="pg036_n0003"]::before {
-  content: "";
-  display: inline-block;
-  width: 2.25rem;
-  height: 1.4rem;
-  margin-right: .45rem;
-  vertical-align: -.18rem;
-  border: 1px solid #555;
-  background: #fff;
-}

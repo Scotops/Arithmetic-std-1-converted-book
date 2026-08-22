@@ -62,17 +62,13 @@
       section.removeAttribute('data-area-id');
     });
 
-    content.querySelectorAll('[data-submit-target], .adt-activity-actions, .adt-match-panel, .feedback-container, .validation-mark').forEach((element) => element.remove());
+    content.querySelectorAll('[data-submit-target], .adt-activity-actions, .adt-match-panel, .matrix-tracing-tool, .matrix-line-match, .feedback-container, .validation-mark').forEach((element) => element.remove());
     content.querySelectorAll('button').forEach((button) => button.remove());
 
-    content.querySelectorAll('input, textarea, select').forEach((control) => {
-      if (control.matches('input[type="radio"], input[type="checkbox"]')) {
-        control.remove();
-      } else {
-        control.replaceWith(blankFor(control));
-      }
-    });
-    content.querySelectorAll('canvas').forEach((canvas) => canvas.replaceWith(drawingSpaceFor(canvas)));
+    // Interactive answer fields are conversion artefacts, not content from
+    // the printed book. Remove them rather than replacing them with a new
+    // blank answer box.
+    content.querySelectorAll('input, textarea, select, canvas').forEach((control) => control.remove());
 
     content.querySelectorAll('[data-activity-item], [data-aria-id]').forEach((element) => {
       element.removeAttribute('data-activity-item');

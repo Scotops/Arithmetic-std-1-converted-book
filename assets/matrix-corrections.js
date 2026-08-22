@@ -18,6 +18,9 @@
   }
 
   function tracingTool() {
+    // The printed book already contains its tracing examples. Do not add a
+    // second, digital answer area beneath them.
+    return;
     if (!section.dataset.matrixTracing || section.querySelector('.matrix-tracing-tool')) return;
     section.querySelectorAll('input, .adt-activity-actions').forEach(el => el.remove());
     const tool = document.createElement('div'); tool.className = 'matrix-tracing-tool';
@@ -50,6 +53,8 @@
   }
 
   function lineMatching() {
+    // Matching is shown as printed in the source page; no answer widget.
+    return;
     if (section.dataset.sectionId !== 'pg017_sec001' || section.querySelector('.matrix-line-match')) return;
     const pairs = [['four','4'],['one','1'],['three','3'],['six','6'],['nine','9'],['eight','8'],['seven','7'],['five','5']];
     const panel = document.createElement('section'); panel.className = 'matrix-line-match';

@@ -129,6 +129,30 @@ body > main { width: 100%; }
   background: #fff;
   box-shadow: 0 10px 30px rgba(15, 23, 42, .14);
 }
+/* PDF-facsimile mode: the visual page is the source PDF with only its
+   watermark artifact removed.  Original HTML remains available to the
+   reader and read-aloud engine, but does not compete visually with print. */
+#content:has(.pdf-page-facsimile) {
+  padding: 0 !important;
+  overflow: hidden;
+}
+.pdf-page-facsimile {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #fff;
+}
+.pdf-facsimile-accessible-source {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
 @media (max-width: 640px) {
   #content {
     width: 100% !important;

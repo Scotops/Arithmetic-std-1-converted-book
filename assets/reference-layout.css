@@ -2,6 +2,27 @@
 html { background: #e4eaf1; }
 body { min-height: 100vh; background: #e4eaf1 !important; }
 body > main { width: 100%; }
+.page44-printed-equation {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 500;
+  color: #1e293b;
+}
+.page44-answer-box {
+  display: inline-block;
+  width: 3rem;
+  height: 1.5rem;
+  box-sizing: border-box;
+  border: 1px solid #555;
+  background: #fff;
+}
+@media (max-width: 640px) {
+  .page44-printed-equation { gap: .35rem; font-size: 20px; }
+  .page44-answer-box { width: 2.5rem; height: 1.25rem; }
+}
 #content {
   box-sizing: border-box;
   width: min(1090px, calc(100% - 3rem)) !important;

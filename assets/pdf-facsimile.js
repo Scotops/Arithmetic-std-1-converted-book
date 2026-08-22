@@ -64,6 +64,10 @@
     41: {
       text: 'By using accessible tools, draw the remaining objects after taking away.',
       top: '68.4%', left: '12%', width: '78%', minHeight: '5.5%', fontSize: '1.9vw'
+    },
+    51: {
+      text: 'Read / identify the question that appears on the screen clearly.',
+      top: '71.8%', left: '17%', width: '76%', minHeight: '7.6%', fontSize: '2.05vw'
     }
   };
   const instructions = correctedInstructions[page]

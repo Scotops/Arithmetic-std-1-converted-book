@@ -25,11 +25,11 @@
   const correctedInstructions = {
     12: {
       text: 'Count and say / identify the number of objects in each group.',
-      top: '13.3%', left: '11%', width: '78%', minHeight: '6.8%', fontSize: '2.8vw'
+      top: '13.3%', left: '11%', width: '82%', minHeight: '6.8%', fontSize: '1.55vw', nowrap: true
     },
     14: {
       text: 'By using accessible tools, draw a line to match the objects and their number.',
-      top: '12.1%', left: '9.5%', width: '79%', minHeight: '5.2%', fontSize: '2.6vw'
+      top: '12.1%', left: '9.5%', width: '84%', minHeight: '5.2%', fontSize: '1.45vw', nowrap: true
     },
     16: [
       {
@@ -43,35 +43,35 @@
     ],
     17: {
       text: 'By using accessible tools, draw lines to match each word with its number.',
-      top: '12.8%', left: '10%', width: '79%', minHeight: '6%', fontSize: '2.6vw'
+      top: '12.8%', left: '10%', width: '84%', minHeight: '6%', fontSize: '1.45vw', nowrap: true
     },
     18: {
       text: 'Read aloud / sign the following numbers.',
-      top: '13.2%', left: '10%', width: '77%', minHeight: '4.2%', fontSize: '2.75vw'
+      top: '13.2%', left: '10%', width: '82%', minHeight: '4.2%', fontSize: '1.85vw', nowrap: true
     },
     25: {
       text: 'Read aloud / sign the following numbers.',
-      top: '52.8%', left: '11%', width: '76%', minHeight: '4.2%', fontSize: '2.75vw'
+      top: '52.8%', left: '11%', width: '82%', minHeight: '4.2%', fontSize: '1.85vw', nowrap: true
     },
     28: {
       text: 'By using accessible tools / draw pictures to represent the sum of each of the following objects.',
-      top: '72.4%', left: '10%', width: '78%', minHeight: '6.2%', fontSize: '2.1vw'
+      top: '72.4%', left: '10%', width: '80%', minHeight: '6.2%', fontSize: '1.5vw'
     },
     40: {
       text: 'Read / identify the question that appears on the screen clearly.',
-      top: '20.5%', left: '17%', width: '70%', minHeight: '7.2%', fontSize: '2.5vw', background: '#e5f3f4'
+      top: '20.5%', left: '17%', width: '76%', minHeight: '7.2%', fontSize: '1.85vw', background: '#e5f3f4'
     },
     41: {
       text: 'By using accessible tools, draw the remaining objects after taking away.',
-      top: '68.4%', left: '12%', width: '78%', minHeight: '5.5%', fontSize: '2.15vw'
+      top: '68.4%', left: '12%', width: '82%', minHeight: '5.5%', fontSize: '1.45vw', nowrap: true
     },
     51: {
       text: 'Read / identify the question that appears on the screen clearly.',
-      top: '71.8%', left: '17%', width: '76%', minHeight: '7.6%', fontSize: '2.5vw', background: '#e5f3f4'
+      top: '71.8%', left: '17%', width: '76%', minHeight: '7.6%', fontSize: '1.85vw', background: '#e5f3f4'
     },
     52: {
       text: 'Read aloud / sign the following numbers.',
-      top: '70.8%', left: '10%', width: '78%', minHeight: '4.4%', fontSize: '2.75vw'
+      top: '70.8%', left: '10%', width: '82%', minHeight: '4.4%', fontSize: '1.85vw', nowrap: true
     }
   };
   const instructions = correctedInstructions[page]

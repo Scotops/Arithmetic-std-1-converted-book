@@ -40,7 +40,11 @@
         text: 'Read aloud / sign the following numbers.',
         top: '76.8%', left: '10%', width: '77%', minHeight: '4.2%', fontSize: '2.55vw'
       }
-    ]
+    ],
+    17: {
+      text: 'By using accessible tools, draw lines to match each word with its number.',
+      top: '12.8%', left: '10%', width: '79%', minHeight: '6%', fontSize: '2.35vw'
+    }
   };
   const instructions = correctedInstructions[page]
     ? (Array.isArray(correctedInstructions[page]) ? correctedInstructions[page] : [correctedInstructions[page]])

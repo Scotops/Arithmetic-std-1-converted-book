@@ -34,11 +34,11 @@
     16: [
       {
         text: 'Read aloud / sign the following numbers.',
-        top: '38.5%', left: '10%', width: '77%', minHeight: '4.2%', fontSize: '2.75vw'
+        top: '38.5%', left: '10%', width: '82%', minHeight: '4.2%', fontSize: '1.85vw', nowrap: true
       },
       {
         text: 'Read aloud / sign the following numbers.',
-        top: '76.8%', left: '10%', width: '77%', minHeight: '4.2%', fontSize: '2.75vw'
+        top: '76.8%', left: '10%', width: '82%', minHeight: '4.2%', fontSize: '1.85vw', nowrap: true
       }
     ],
     17: {
@@ -90,7 +90,8 @@
       'margin:0', 'padding:0.35% 1.15%', 'box-sizing:border-box',
       `background:${instruction.background || '#fff'}`, 'color:#222', "font-family:'Comic Sans MS','Comic Sans',cursive",
       `font-size:${instruction.fontSize}`, 'font-style:italic', 'font-weight:400', 'font-stretch:normal',
-      'letter-spacing:normal', 'line-height:1.3', 'transform:scaleX(0.94)', 'transform-origin:top left'
+      'letter-spacing:normal', 'line-height:1.3', `white-space:${instruction.nowrap ? 'nowrap' : 'normal'}`,
+      'transform:scaleX(0.94)', 'transform-origin:top left'
     ].join(';');
     content.append(correction);
   });

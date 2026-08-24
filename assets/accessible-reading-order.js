@@ -49,6 +49,15 @@
         return;
       }
 
+      // The conversion supplies an image and an invisible caption node with
+      // the same ID.  Those are one description, not two picture readings.
+      // Keep only the first target even though a screen-reader-only caption
+      // is technically visible according to computed CSS.
+      if (id.includes('_im')) {
+        element.removeAttribute('data-id');
+        return;
+      }
+
       if (!visible) {
         element.removeAttribute('data-id');
       } else if (!prior.visible) {

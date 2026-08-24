@@ -101,8 +101,44 @@
     });
   };
 
+  let lockedVoice = null;
+
   const cancelPreviousSpeech = () => {
     if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  };
+
+  // This reader normally uses the single pre-generated narrator recording.
+  // If a browser falls back to SpeechSynthesis, select one voice once per
+  // session and reuse that same SpeechSynthesisVoice for every utterance.
+  const getLockedVoice = () => {
+    if (!('speechSynthesis' in window)) return null;
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices.length) return lockedVoice;
+    if (!lockedVoice || !voices.includes(lockedVoice)) {
+      lockedVoice = voices.find((voice) => /^en(?:-|_)/i.test(voice.lang) && /guy|male/i.test(voice.name))
+        || voices.find((voice) => /^en(?:-|_)/i.test(voice.lang))
+        || voices[0];
+    }
+    return lockedVoice;
+  };
+
+  const speakFallbackQueue = (items, { rate = 1 } = {}) => {
+    if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') return false;
+    const phrases = items.map((item) => normalize(typeof item === 'string' ? item : item?.text)).filter(Boolean);
+    if (!phrases.length) return false;
+    cancelPreviousSpeech();
+    const voice = getLockedVoice();
+    let cursor = 0;
+    const playNext = () => {
+      if (cursor >= phrases.length) return;
+      const utterance = new SpeechSynthesisUtterance(phrases[cursor++]);
+      utterance.voice = voice;
+      utterance.rate = rate;
+      utterance.onend = playNext;
+      window.speechSynthesis.speak(utterance);
+    };
+    playNext();
+    return true;
   };
 
   window.ADT_TTS_PIPELINE = Object.freeze({
@@ -111,6 +147,8 @@
     normalize,
     summarizeMatrix,
     inspect,
-    cancelPreviousSpeech
+    cancelPreviousSpeech,
+    getLockedVoice,
+    speakFallbackQueue
   });
 })();

@@ -58,42 +58,38 @@
     return match ? Number(match[1]) : null;
   };
 
-  const orderedGridChildren = (grid) => {
-    const children = Array.from(grid.children);
-    const numbered = [];
-    for (let index = 0; index < children.length; index += 1) {
-      const child = children[index];
-      const marker = Array.from(child.querySelectorAll('[data-id]'))
-        .find((element) => questionNumber(element) !== null);
-      if (!marker) continue;
+  const orderedGridItems = (grid) => {
+    // Some print layouts use one direct grid child per row.  Others wrap all
+    // four cells of the row in a `contents` element.  Work from the actual
+    // reading targets instead of the grid's direct children so both layouts
+    // are handled consistently.
+    const items = Array.from(grid.querySelectorAll('[data-id]'));
+    const markers = items
+      .map((element, index) => ({ element, index, number: questionNumber(element) }))
+      .filter((item) => item.number !== null);
 
-      // Print grids often use adjacent cells for a question number and its
-      // equation. Treat that neighbouring pair as one narration unit before
-      // ordering the exercise numerically; never split labels from content.
-      const nodes = [child];
-      const next = children[index + 1];
-      const nextHasMarker = next && Array.from(next.querySelectorAll('[data-id]'))
-        .some((element) => questionNumber(element) !== null);
-      if (next && !nextHasMarker) {
-        nodes.push(next);
-        index += 1;
-      }
-      numbered.push({ nodes, index, number: questionNumber(marker) });
-    }
-    const questions = numbered;
-
-    // A two-cell table is not a numbered exercise.  Reorder only genuine
-    // question grids that contain at least three distinct item numbers.
-    if (questions.length < 3 || new Set(questions.map((item) => item.number)).size < 3) {
+    // Only reorder a complete, unique run of question labels. This avoids
+    // merging separate examples or ordinary number tables that happen to be
+    // inside the same CSS grid.
+    if (markers.length < 3 || new Set(markers.map((item) => item.number)).size !== markers.length) {
       return null;
     }
-    const original = questions.map((item) => item.number);
-    const sorted = [...questions].sort((a, b) => a.number - b.number || a.index - b.index);
+    const original = markers.map((item) => item.number);
+    const sorted = [...markers].sort((a, b) => a.number - b.number || a.index - b.index);
     if (original.every((number, index) => number === sorted[index].number)) return null;
 
-    const questionChildren = new Set(questions.flatMap((item) => item.nodes));
-    const otherChildren = children.filter((child) => !questionChildren.has(child));
-    return [...sorted.flatMap((item) => item.nodes), ...otherChildren];
+    // Keep each marker paired with all content up to the next marker. Thus,
+    // "Question 2" is immediately followed by Question 2's equation, not a
+    // question number from another printed column.
+    const questions = markers.map((marker, index) => ({
+      ...marker,
+      items: items.slice(marker.index, markers[index + 1]?.index ?? items.length)
+    }));
+    const firstQuestion = markers[0].index;
+    const beforeQuestions = items.slice(0, firstQuestion);
+    return [...beforeQuestions, ...questions
+      .sort((a, b) => a.number - b.number || a.index - b.index)
+      .flatMap((question) => question.items)];
   };
 
   const makeNarrationTarget = (element) => {
@@ -121,16 +117,16 @@
     // Replace each out-of-order numbered grid with the same children, sorted
     // by its printed item number.  All remaining page content stays in DOM
     // order, which is already its intended reading order.
-    root.querySelectorAll('.grid').forEach((grid) => {
-      const children = orderedGridChildren(grid);
-      if (!children) return;
+    // Exercises are usually CSS grids, but some source pages use a semantic
+    // table or an unstyled activity section. Apply the same question-unit
+    // ordering to each of those structures. A container is changed only when
+    // it contains one complete, unique out-of-order question sequence.
+    root.querySelectorAll('table, .grid, section[data-section-type]').forEach((grid) => {
+      const replacement = orderedGridItems(grid);
+      if (!replacement) return;
       const originalItems = Array.from(grid.querySelectorAll('[data-id]'));
       if (!originalItems.length) return;
       originalItems.forEach((element) => excluded.add(element));
-      const replacement = [];
-      children.forEach((child) => {
-        child.querySelectorAll('[data-id]').forEach((element) => replacement.push(element));
-      });
       replacements.set(originalItems[0], replacement);
     });
 

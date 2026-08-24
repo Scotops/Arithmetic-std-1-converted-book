@@ -60,6 +60,109 @@
     });
   };
 
+  /*
+   * The source book often prints a numbered exercise in several columns.
+   * Its HTML therefore follows the print row (1, 7, 13, then 2, 8, 14),
+   * while a child listening to the book needs the mathematical sequence
+   * (1, 2, 3, ...).  Build an audio-only copy of the reading targets for
+   * these grids.  The printed elements retain their exact appearance; only
+   * the read-aloud playlist receives the reordered targets.
+   */
+  const questionNumber = (element) => {
+    const match = (element.textContent || '').trim().match(/^(\d{1,3})\.$/);
+    return match ? Number(match[1]) : null;
+  };
+
+  const orderedGridChildren = (grid) => {
+    const children = Array.from(grid.children);
+    const numbered = children.map((child, index) => {
+      const marker = Array.from(child.querySelectorAll('[data-id]'))
+        .find((element) => questionNumber(element) !== null);
+      return marker ? { child, index, number: questionNumber(marker) } : null;
+    });
+    const questions = numbered.filter(Boolean);
+
+    // A two-cell table is not a numbered exercise.  Reorder only genuine
+    // question grids that contain at least three distinct item numbers.
+    if (questions.length < 3 || new Set(questions.map((item) => item.number)).size < 3) {
+      return null;
+    }
+    const original = questions.map((item) => item.number);
+    const sorted = [...questions].sort((a, b) => a.number - b.number || a.index - b.index);
+    if (original.every((number, index) => number === sorted[index].number)) return null;
+
+    const questionChildren = new Set(questions.map((item) => item.child));
+    const otherChildren = children.filter((child) => !questionChildren.has(child));
+    return [...sorted.map((item) => item.child), ...otherChildren];
+  };
+
+  const makeNarrationTarget = (element) => {
+    const isImage = element.tagName.toLowerCase() === 'img';
+    const target = document.createElement(isImage ? 'img' : 'span');
+    target.className = 'adt-reading-target';
+    target.setAttribute('data-id', element.getAttribute('data-id'));
+    if (isImage) {
+      target.setAttribute('alt', element.getAttribute('alt') || '');
+    } else {
+      target.textContent = element.textContent || '';
+    }
+    return target;
+  };
+
+  const rebuildNarrationQueue = () => {
+    const root = document.getElementById('content');
+    if (!root) return;
+
+    const sourceItems = Array.from(root.querySelectorAll('[data-id]'));
+    const excluded = new Set();
+    const replacements = new Map();
+    const ordered = [];
+
+    // Replace each out-of-order numbered grid with the same children, sorted
+    // by its printed item number.  All remaining page content stays in DOM
+    // order, which is already its intended reading order.
+    root.querySelectorAll('.grid').forEach((grid) => {
+      const children = orderedGridChildren(grid);
+      if (!children) return;
+      const originalItems = Array.from(grid.querySelectorAll('[data-id]'));
+      if (!originalItems.length) return;
+      originalItems.forEach((element) => excluded.add(element));
+      const replacement = [];
+      children.forEach((child) => {
+        child.querySelectorAll('[data-id]').forEach((element) => replacement.push(element));
+      });
+      replacements.set(originalItems[0], replacement);
+    });
+
+    sourceItems.forEach((element) => {
+      const replacement = replacements.get(element);
+      if (replacement) ordered.push(...replacement);
+      else if (!excluded.has(element)) ordered.push(element);
+    });
+
+    // Do not read the same element twice if a grid is nested in another grid.
+    const unique = [];
+    const seen = new Set();
+    ordered.forEach((element) => {
+      if (!seen.has(element)) {
+        seen.add(element);
+        unique.push(element);
+      }
+    });
+
+    if (!unique.length) return;
+    // Capture IDs before clearing the visual elements.  The visible page
+    // becomes presentation-only; the hidden targets carry the audio IDs.
+    const targets = unique.map(makeNarrationTarget);
+    sourceItems.forEach((element) => element.removeAttribute('data-id'));
+    const queue = document.createElement('div');
+    queue.className = 'adt-reading-queue';
+    queue.setAttribute('aria-hidden', 'true');
+    queue.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
+    targets.forEach((target) => queue.appendChild(target));
+    root.appendChild(queue);
+  };
+
   const patchLocalizedFetches = () => {
     const fetchFromBook = window.fetch.bind(window);
     window.fetch = async (input, init) => {
@@ -79,5 +182,6 @@
   };
 
   keepOnlyTheVisibleCopy();
+  rebuildNarrationQueue();
   patchLocalizedFetches();
 })();

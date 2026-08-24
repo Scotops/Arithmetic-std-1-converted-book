@@ -163,6 +163,11 @@ body > main { width: 100%; }
   position: absolute !important;
   width: 1px !important;
   height: 1px !important;
+  /* Source sections may carry Tailwind's min-h-screen.  Although they are
+     visually clipped, that minimum height still enlarges the document and
+     creates a full blank screen after the printed page. */
+  min-height: 0 !important;
+  max-height: 1px !important;
   padding: 0 !important;
   margin: -1px !important;
   overflow: hidden !important;

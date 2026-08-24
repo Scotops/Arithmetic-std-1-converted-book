@@ -14,6 +14,8 @@
     pg043_n0060: 'dash'
   };
 
+  const pipeline = window.ADT_TTS_PIPELINE;
+
   const audioFixes = {
     pg043_n0035: 'pg043_n0035.revised.wav?v=audio-audit-20260824',
     pg043_n0060: 'pg043_n0060.revised.wav?v=audio-audit-20260824',
@@ -31,41 +33,15 @@
   };
 
   const keepOnlyTheVisibleCopy = () => {
-    const firstById = new Map();
-    document.querySelectorAll('#content [data-id]').forEach((element) => {
-      // Screen-reader labels inside printed answer tables repeat the column
-      // headings. The headings themselves are already read once.
-      if (element.closest('label.sr-only')) {
-        element.removeAttribute('data-id');
-        return;
-      }
-
-      const id = element.getAttribute('data-id');
-      if (!id) return;
-      const visible = isVisibleForReading(element);
-      const prior = firstById.get(id);
-      if (!prior) {
-        firstById.set(id, { element, visible });
-        return;
-      }
-
-      // The conversion supplies an image and an invisible caption node with
-      // the same ID.  Those are one description, not two picture readings.
-      // Keep only the first target even though a screen-reader-only caption
-      // is technically visible according to computed CSS.
-      if (id.includes('_im')) {
-        element.removeAttribute('data-id');
-        return;
-      }
-
-      if (!visible) {
-        element.removeAttribute('data-id');
-      } else if (!prior.visible) {
-        prior.element.removeAttribute('data-id');
-        firstById.set(id, { element, visible: true });
-      }
-      // If both copies are visible, they represent separate printed content
-      // and must remain in the spoken sequence.
+    const root = document.getElementById('content');
+    if (!root) return;
+    const all = Array.from(root.querySelectorAll('[data-id]'));
+    const kept = new Set(pipeline ? pipeline.deduplicate(pipeline.extract(root)) : all);
+    all.forEach((element) => {
+      // Screen-reader labels embedded in print tables, hidden answer keys,
+      // responsive copies, and duplicate image captions are not independent
+      // pieces of book content.
+      if (element.closest('label.sr-only') || !kept.has(element)) element.removeAttribute('data-id');
     });
   };
 
@@ -122,7 +98,7 @@
     const root = document.getElementById('content');
     if (!root) return;
 
-    const sourceItems = Array.from(root.querySelectorAll('[data-id]'));
+    const sourceItems = pipeline ? pipeline.deduplicate(pipeline.extract(root)) : Array.from(root.querySelectorAll('[data-id]'));
     const excluded = new Set();
     const replacements = new Map();
     const ordered = [];
@@ -160,6 +136,7 @@
     });
 
     if (!unique.length) return;
+    pipeline?.cancelPreviousSpeech();
     // Capture IDs before clearing the visual elements.  The visible page
     // becomes presentation-only; the hidden targets carry the audio IDs.
     const targets = unique.map(makeNarrationTarget);
@@ -170,6 +147,14 @@
     queue.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
     targets.forEach((target) => queue.appendChild(target));
     root.appendChild(queue);
+    window.ADT_TTS_DEBUG = Object.freeze({
+      queue: () => unique.map((element, index) => ({
+        index: index + 1,
+        id: element.getAttribute('data-id'),
+        text: pipeline?.normalize(element.textContent || element.getAttribute('alt') || '') || ''
+      })),
+      matrix: (selector) => pipeline?.summarizeMatrix(root.querySelector(selector)) || []
+    });
   };
 
   const patchLocalizedFetches = () => {

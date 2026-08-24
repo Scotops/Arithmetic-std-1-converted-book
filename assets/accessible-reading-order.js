@@ -60,12 +60,27 @@
 
   const orderedGridChildren = (grid) => {
     const children = Array.from(grid.children);
-    const numbered = children.map((child, index) => {
+    const numbered = [];
+    for (let index = 0; index < children.length; index += 1) {
+      const child = children[index];
       const marker = Array.from(child.querySelectorAll('[data-id]'))
         .find((element) => questionNumber(element) !== null);
-      return marker ? { child, index, number: questionNumber(marker) } : null;
-    });
-    const questions = numbered.filter(Boolean);
+      if (!marker) continue;
+
+      // Print grids often use adjacent cells for a question number and its
+      // equation. Treat that neighbouring pair as one narration unit before
+      // ordering the exercise numerically; never split labels from content.
+      const nodes = [child];
+      const next = children[index + 1];
+      const nextHasMarker = next && Array.from(next.querySelectorAll('[data-id]'))
+        .some((element) => questionNumber(element) !== null);
+      if (next && !nextHasMarker) {
+        nodes.push(next);
+        index += 1;
+      }
+      numbered.push({ nodes, index, number: questionNumber(marker) });
+    }
+    const questions = numbered;
 
     // A two-cell table is not a numbered exercise.  Reorder only genuine
     // question grids that contain at least three distinct item numbers.
@@ -76,9 +91,9 @@
     const sorted = [...questions].sort((a, b) => a.number - b.number || a.index - b.index);
     if (original.every((number, index) => number === sorted[index].number)) return null;
 
-    const questionChildren = new Set(questions.map((item) => item.child));
+    const questionChildren = new Set(questions.flatMap((item) => item.nodes));
     const otherChildren = children.filter((child) => !questionChildren.has(child));
-    return [...sorted.map((item) => item.child), ...otherChildren];
+    return [...sorted.flatMap((item) => item.nodes), ...otherChildren];
   };
 
   const makeNarrationTarget = (element) => {

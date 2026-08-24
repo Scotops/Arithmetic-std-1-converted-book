@@ -2314,13 +2314,13 @@
   "pg100_n0065": "pg100_n0065.mp3",
   "pg100_n0066": "pg100_n0066.mp3?v=blank-dash-20260822",
   "pg100_n0069": "pg100_n0069.mp3",
-  "pg100_n0070": "pg100_n0070.mp3?v=blank-dash-20260822",
+  "pg100_n0070": "pg100_n0070.revised.wav?v=audio-audit-20260824",
   "pg100_n0074": "pg100_n0074.mp3",
-  "pg100_n0075": "pg100_n0075.mp3?v=blank-dash-20260822",
+  "pg100_n0075": "pg100_n0075.revised.wav?v=audio-audit-20260824",
   "pg100_n0078": "pg100_n0078.mp3",
-  "pg100_n0079": "pg100_n0079.mp3?v=blank-dash-20260822",
+  "pg100_n0079": "pg100_n0079.revised.wav?v=audio-audit-20260824",
   "pg100_n0082": "pg100_n0082.mp3",
-  "pg100_n0083": "pg100_n0083.mp3?v=blank-dash-20260822",
+  "pg100_n0083": "pg100_n0083.revised.wav?v=audio-audit-20260824",
   "pg101_n0003": "pg101_n0003.mp3",
   "pg101_n0004": "pg101_n0004.matrix.wav?voice=male-david-20260818?v=blank-dash-20260822",
   "pg101_n0006": "pg101_n0006.mp3",
@@ -3944,5 +3944,7 @@
   "pg043_n0054": "pg042_n0031b.mp3?v=complete-readaloud-20260822",
   "pg043_n0058": "pg042_n0031d.mp3?v=complete-readaloud-20260822",
   "pg051_n0037": "pg051_n0037.mp3",
-  "pg053_n0116": "pg053_n0116.mp3"
+  "pg053_n0116": "pg053_n0116.mp3",
+  "pg043_n0035": "pg043_n0035.revised.wav?v=audio-audit-20260824",
+  "pg043_n0060": "pg043_n0060.revised.wav?v=audio-audit-20260824"
 }

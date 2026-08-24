@@ -69,7 +69,7 @@
    * the read-aloud playlist receives the reordered targets.
    */
   const questionNumber = (element) => {
-    const match = (element.textContent || '').trim().match(/^(\d{1,3})\.$/);
+    const match = (element.textContent || '').trim().match(/^(\d{1,3})\.(?:\s|$)/);
     return match ? Number(match[1]) : null;
   };
 

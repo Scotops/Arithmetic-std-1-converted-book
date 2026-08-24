@@ -136,6 +136,13 @@
     });
 
     if (!unique.length) return;
+    // Save the final queue before removing source IDs. The visible page uses
+    // its native print layout; these snapshots power safe console validation.
+    const debugItems = unique.map((element, index) => ({
+      index: index + 1,
+      id: element.getAttribute('data-id'),
+      text: pipeline?.normalize(element.textContent || element.getAttribute('alt') || '') || ''
+    }));
     pipeline?.cancelPreviousSpeech();
     // Capture IDs before clearing the visual elements.  The visible page
     // becomes presentation-only; the hidden targets carry the audio IDs.
@@ -148,11 +155,7 @@
     targets.forEach((target) => queue.appendChild(target));
     root.appendChild(queue);
     window.ADT_TTS_DEBUG = Object.freeze({
-      queue: () => unique.map((element, index) => ({
-        index: index + 1,
-        id: element.getAttribute('data-id'),
-        text: pipeline?.normalize(element.textContent || element.getAttribute('alt') || '') || ''
-      })),
+      queue: () => debugItems.map((item) => ({ ...item })),
       matrix: (selector) => pipeline?.summarizeMatrix(root.querySelector(selector)) || []
     });
   };

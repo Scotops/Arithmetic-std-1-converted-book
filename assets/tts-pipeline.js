@@ -36,6 +36,7 @@
       .replace(/<[^>]+>/g, ' ')
       .replace(/&nbsp;/gi, ' ')
       .replace(/(?:\[\s*\]|_{2,})/g, ' dash ')
+      .replace(/(\d+)\s*\/\s*(\d+)/g, '$1 over $2')
       .replace(/[−–]/g, ' minus ')
       .replace(/(?<=\d)\s*-\s*(?=\d)/g, ' minus ')
       .replace(/\+\s*=/g, ' plus dash equals ')

@@ -18,13 +18,34 @@
       }
     });
   };
+  // A previous page-generation pass accidentally wrote the PowerShell newline
+  // escape sequence as visible text (for example, "`r`n") at the end of some
+  // pages.  It is never book content, so remove it defensively even when an
+  // old document is retrieved from the reader's offline cache.
+  const stripStrayNewlineEscapes = (root = document) => {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach((node) => {
+      const cleaned = node.nodeValue
+        .replace(/`r`n/g, '')
+        .replace(/\\\\r\\\\n/g, '');
+      if (cleaned !== node.nodeValue) node.nodeValue = cleaned;
+    });
+  };
   remove();
+  stripStrayNewlineEscapes();
   new MutationObserver((records) => {
     for (const record of records) {
       record.addedNodes.forEach((node) => {
-        if (node.nodeType === Node.ELEMENT_NODE) remove(node);
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          remove(node);
+          stripStrayNewlineEscapes(node);
+        }
       });
-      if (record.type === 'attributes' && record.target instanceof HTMLElement) remove(record.target.parentElement || document);
+      if (record.type === 'attributes' && record.target instanceof HTMLElement) {
+        remove(record.target.parentElement || document);
+      }
     }
   }).observe(document.documentElement, {
     childList: true,

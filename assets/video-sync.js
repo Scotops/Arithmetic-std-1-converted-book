@@ -1,40 +1,46 @@
-/* Play a separate, muted sign-video layer alongside the ADT narration. */
+/* Keep a separate, muted sign-video layer independent from ADT narration. */
 (() => {
   const YEAR = 31536000;
   let signClone = null;
-  let narrationRequested = false;
-  let narrationAudio = null;
-  let pauseTimer = null;
-  const trackedNarrations = new WeakSet();
+  let autoplayPending = false;
+  let gestureRetryPending = false;
 
   const setReaderMode = key => {
     try { localStorage.setItem(key, "true"); } catch (_) {}
     try { document.cookie = `${key}=true; path=/; max-age=${YEAR}`; } catch (_) {}
   };
-  const sessionHasStarted = () => {
-    try { return sessionStorage.getItem("adtNarrationStarted") === "true"; } catch (_) { return false; }
-  };
-  const markSessionStarted = () => {
-    try { sessionStorage.setItem("adtNarrationStarted", "true"); } catch (_) {}
-  };
-
-  // Show the sign panel from the beginning. The learner's first Play click
-  // begins both streams; later pages resume from the stored reading session.
+  // Keep both accessibility tools available, but do not couple their playback.
   setReaderMode("signLanguageMode");
   setReaderMode("readAloudMode");
 
   const isSourceVideo = media => media instanceof HTMLVideoElement &&
     /\/content\/i18n\/[^/]+\/video\/page_\d+\.mp4(?:[?#]|$)/.test(media.currentSrc || media.src || "") &&
     !media.dataset.signLanguageClone;
-  const isNarrationAudio = media => media instanceof HTMLAudioElement &&
-    /\/content\/i18n\/[^/]+\/audio\//.test(media.currentSrc || media.src || "");
+  const clearGestureRetry = () => {
+    if (!gestureRetryPending) return;
+    gestureRetryPending = false;
+    document.removeEventListener("pointerdown", retryAfterGesture, true);
+    document.removeEventListener("keydown", retryAfterGesture, true);
+  };
+
+  const scheduleGestureRetry = () => {
+    if (gestureRetryPending || !autoplayPending) return;
+    gestureRetryPending = true;
+    document.addEventListener("pointerdown", retryAfterGesture, true);
+    document.addEventListener("keydown", retryAfterGesture, true);
+  };
+
+  function retryAfterGesture() {
+    clearGestureRetry();
+    playSignVideo();
+  }
 
   const playSignVideo = () => {
-    if (!signClone) return;
-    signClone.play().catch(() => {});
-  };
-  const pauseSignVideo = () => {
-    if (signClone && !signClone.paused) signClone.pause();
+    if (!autoplayPending || !signClone || !signClone.paused || signClone.ended) return;
+    Promise.resolve(signClone.play()).then(() => {
+      autoplayPending = false;
+      clearGestureRetry();
+    }).catch(scheduleGestureRetry);
   };
 
   // The ADT's React component pauses its own sign video when voice mode is
@@ -57,7 +63,11 @@
     clone.muted = true;
     clone.volume = 0;
     clone.setAttribute("muted", "");
-    clone.removeAttribute("autoplay");
+    clone.autoplay = true;
+    clone.setAttribute("autoplay", "");
+    clone.playsInline = true;
+    clone.setAttribute("playsinline", "");
+    clone.preload = "auto";
     // cloneNode copies the hidden source element's inline `display: none`.
     // Restore a normal display value so the actual signer image is visible.
     clone.style.display = "block";
@@ -72,8 +82,12 @@
     host.style.height = "100%";
     source.insertAdjacentElement("afterend", host);
     host.attachShadow({ mode: "open" }).appendChild(clone);
-    clone.load();
     signClone = clone;
+    autoplayPending = true;
+    clone.addEventListener("loadedmetadata", playSignVideo, { once: true });
+    clone.addEventListener("canplay", playSignVideo, { once: true });
+    clone.load();
+    playSignVideo();
   };
 
   const scan = root => {
@@ -88,71 +102,15 @@
       createIndependentVideo(this);
       return Promise.resolve();
     }
-    const result = nativePlay.apply(this, args);
-    if (isNarrationAudio(this)) {
-      narrationAudio = this;
-      narrationRequested = true;
-      if (!trackedNarrations.has(this)) {
-        trackedNarrations.add(this);
-        this.addEventListener("ended", () => {
-          pauseTimer = setTimeout(() => {
-            if (narrationAudio === this && this.paused) {
-              narrationRequested = false;
-              pauseSignVideo();
-            }
-          }, 1500);
-        });
-      }
-      Promise.resolve(result).then(() => {
-        clearTimeout(pauseTimer);
-        playSignVideo();
-      }).catch(() => {});
-    }
-    return result;
+    return nativePlay.apply(this, args);
   };
   HTMLMediaElement.prototype.pause = function (...args) {
     if (isSourceVideo(this)) return;
-    const result = nativePause.apply(this, args);
-    if (isNarrationAudio(this)) {
-      pauseTimer = setTimeout(() => {
-        if (narrationAudio?.paused) pauseSignVideo();
-      }, this.ended ? 1500 : 80);
-    }
-    return result;
-  };
-
-  document.addEventListener("click", event => {
-    const button = event.target instanceof Element
-      ? event.target.closest("button[aria-label]") : null;
-    const label = button?.getAttribute("aria-label") || "";
-    if (label === "Play" && event.isTrusted) {
-      markSessionStarted();
-      narrationRequested = true;
-      // This shares the learner's click with the video, avoiding a delayed
-      // initial frame. The narration hook above keeps it synchronized after.
-      playSignVideo();
-    }
-    if (label === "Stop" || /Deactivate text to speech/i.test(label)) {
-      narrationRequested = false;
-      pauseSignVideo();
-    }
-  }, true);
-
-  const resumeFollowingPage = () => {
-    if (!sessionHasStarted()) return;
-    let tries = 0;
-    const resume = () => {
-      const play = [...document.querySelectorAll("button[aria-label]")]
-        .find(button => button.getAttribute("aria-label") === "Play");
-      if (play && !play.disabled) { play.click(); return; }
-      if (++tries < 30) setTimeout(resume, 150);
-    };
-    setTimeout(resume, 100);
+    return nativePause.apply(this, args);
   };
 
   scan(document);
   new MutationObserver(records => {
     records.forEach(record => record.addedNodes.forEach(scan));
   }).observe(document.documentElement, { childList: true, subtree: true });
-  resumeFollowingPage();
 })();

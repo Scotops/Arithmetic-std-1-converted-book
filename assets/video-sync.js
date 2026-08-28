@@ -55,10 +55,13 @@
     source.volume = 0;
     source.pause();
     source.removeAttribute("autoplay");
+    source.setAttribute("aria-hidden", "true");
     source.style.display = "none";
 
     const clone = source.cloneNode(true);
     clone.dataset.signLanguageClone = "true";
+    delete clone.dataset.signLanguageSource;
+    clone.removeAttribute("aria-hidden");
     clone.defaultMuted = true;
     clone.muted = true;
     clone.volume = 0;

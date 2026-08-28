@@ -12,6 +12,14 @@
   visibility: visible !important;
   opacity: 1 !important;
 }
+[data-sign-language-player] video[data-sign-language-source="true"] {
+  display: none !important;
+}
+[data-sign-language-host] {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
 [data-sign-language-drag-handle] {
   touch-action: none !important;
   -webkit-user-select: none !important;
